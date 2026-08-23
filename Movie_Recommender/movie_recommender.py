@@ -1,24 +1,12 @@
 import aiNet
 
-def recommend_movies(
-    user,
-    movies,
-    affinity_function,
-    number_of_recommendations=10
-):
+def recommend_movies(user, movies, affinity_function, number_of_recommendations=10):
     
-    network = run_ainet(
-        user,
-        movies,
-        affinity_function
-    )
+    network = run_ainet(user, movies, affinity_function)
 
     recommendations = []
 
-    rated_movie_ids = {
-        rating.movie_id
-        for rating in user.movie_ratings
-    }
+    rated_movie_ids = {rating.movie_id for rating in user.movie_ratings}
 
     for antibody in network:
         
@@ -26,9 +14,7 @@ def recommend_movies(
 
         if movie.id not in rated_movie_ids:
             
-            recommendations.append(
-                (movie, antibody.affinity)
-            )
+            recommendations.append((movie, antibody.affinity))
 
         if len(recommendations) == number_of_recommendations:
             break
