@@ -133,7 +133,7 @@ def clone_and_mutate(selected_antibodies: list[Movie], clones_per_antibody: int)
 
 def antibody_similarity(antibody_a, antibody_b, affinity_function):
     
-    return affinity_function(antibody_a.vector, antibody_b.vector)
+    return affinity_function(antibody_a.preference_profile, antibody_b.preference_profile)
 
 def suppress_similar_antibodies(population: list[Movie], suppression_threshold: float):
     
