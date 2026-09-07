@@ -1,0 +1,18 @@
+body {
+    background-color: lightskyblue;
+}
+
+table {
+    margin-bottom: 10px;
+}
+
+.recommendations {
+    display: flex;
+    gap: 10px;
+}
+
+.movie-card {
+    border: 1px solid black;
+    padding: 10px;
+    background-color: white;
+}
