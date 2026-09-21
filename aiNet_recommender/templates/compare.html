@@ -1,0 +1,69 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Comparison</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+
+    <body>
+        <h1>Adaptive Movie Recommendation System</h1>
+
+        <p><a href="{{ url_for('recommendations') }}">&larr; back to recommendations</a></p>
+
+        <h2>aiNet vs User-Based Collaborative Filtering (kNN)</h2>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% else %}
+
+        <div class="compare-info">
+            <p>
+                <strong>Evaluation methodology:</strong>
+                The current user's ratings were split 80/20 — <strong>{{ n_train }}</strong> ratings
+                used for training and <strong>{{ n_test }}</strong> held out for evaluation.
+                Both systems were run fresh on the training set only.
+                kNN used <strong>k={{ k }}</strong> nearest neighbours.
+                Affinity function: <strong>{{ affinity_function_name }}</strong>.
+            </p>
+            <p>
+                <strong>Note on genre affinity score:</strong> Because many movies share identical
+                19-bit genre vectors, exact movie matching is unreliable as an accuracy measure.
+                Genre affinity score instead measures how well each system covers the genre
+                regions of the held-out movies, which is more appropriate for this representation.
+            </p>
+        </div>
+
+        <h3>Metrics</h3>
+
+        <table border="1" class="compare-table metrics-table">
+            <tr>
+                <th>Metric</th>
+                <th>aiNet</th>
+                <th>kNN</th>
+                <th>What it measures</th>
+            </tr>
+            <tr>
+                <td>Genre Affinity Score</td>
+                <td>{{ ainet_metrics.genre_affinity_score }}</td>
+                <td>{{ knn_metrics.genre_affinity_score }}</td>
+                <td>How well recommendations cover the genre regions of held-out highly-rated movies. Higher is better.</td>
+            </tr>
+            <tr>
+                <td>Intra List Diversity (ILD)</td>
+                <td>{{ ainet_metrics.intra_list_diversity }}</td>
+                <td>{{ knn_metrics.intra_list_diversity }}</td>
+                <td>Average pairwise genre distance between recommended movies. Higher means more diverse recommendations.</td>
+            </tr>
+            <tr>
+                <td>Novelty</td>
+                <td>{{ ainet_metrics.novelty }}</td>
+                <td>{{ knn_metrics.novelty }}</td>
+                <td>Average -log₂(popularity) of recommended movies. Higher means recommending less mainstream, more niche movies.</td>
+            </tr>
+        </table>
+
+        {% endif %}
+    </body>
+</html>
